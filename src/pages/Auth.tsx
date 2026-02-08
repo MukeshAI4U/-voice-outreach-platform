@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
+import { Header } from "@/components/Header";
 
 // Initialize Supabase Client (Will be moved to separate file later)
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
@@ -14,8 +15,9 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const Auth = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const defaultView = searchParams.get("view") === "signup" ? "signup" : "signin";
+  const [activeTab, setActiveTab] = useState(defaultView);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,11 +25,20 @@ const Auth = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    setActiveTab(searchParams.get("view") === "signup" ? "signup" : "signin");
+  }, [searchParams]);
+
+  useEffect(() => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) navigate("/dashboard");
     });
   }, [navigate]);
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setSearchParams({ view: value });
+  };
 
   const handleAuth = async (type: "signin" | "signup") => {
     setLoading(true);
@@ -58,8 +69,10 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-secondary/30 p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex flex-col bg-secondary/30">
+      <Header />
+      <div className="flex-1 flex items-center justify-center p-4">
+        <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
           <CardDescription>
@@ -67,7 +80,7 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue={defaultView} className="w-full">
+          <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -122,7 +135,12 @@ const Auth = () => {
               </span>
             </div>
           </div>
-          <Button variant="outline" className="w-full" onClick={() => supabase.auth.signInWithOAuth({ provider: 'google' })}>
+          <Button variant="outline" className="w-full" onClick={() => supabase.auth.signInWithOAuth({ 
+            provider: 'google',
+            options: {
+              redirectTo: `${window.location.origin}/-voice-outreach-platform/`
+            }
+          })}>
             <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

@@ -1,31 +1,11 @@
 import { Link } from "react-router-dom";
 import { Mic, CheckCircle, Phone, ArrowRight, Activity, Shield } from "lucide-react";
+import { Header } from "@/components/Header";
 
 const Landing = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="border-b sticky top-0 bg-background/95 backdrop-blur z-50">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground">
-              <Mic className="h-5 w-5" />
-            </div>
-            <span className="text-xl font-bold">VoiceReach AI</span>
-          </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="text-sm font-medium hover:text-primary">Features</a>
-            <a href="#how-it-works" className="text-sm font-medium hover:text-primary">How it Works</a>
-            <a href="#pricing" className="text-sm font-medium hover:text-primary">Pricing</a>
-          </nav>
-          <div className="flex items-center space-x-4">
-            <Link to="/auth?view=signin" className="text-sm font-medium hover:text-primary">Sign In</Link>
-            <Link to="/auth?view=signup" className="bg-primary text-primary-foreground px-4 py-2 rounded-md text-sm font-medium hover:bg-primary/90">
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* Hero Section */}
       <section className="py-20 md:py-32">
