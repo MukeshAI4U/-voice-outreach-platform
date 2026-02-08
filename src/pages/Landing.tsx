@@ -63,6 +63,38 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* How it Works Section */}
+      <section id="how-it-works" className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-16">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+            {[
+              { step: "1", title: "Upload Contacts", desc: "Import your leads via CSV or connect your CRM." },
+              { step: "2", title: "Configure Agent", desc: "Choose a voice, set the script, and define goals." },
+              { step: "3", title: "Launch Campaign", desc: "The AI starts calling and qualifying leads automatically." }
+            ].map((item, i) => (
+              <div key={i} className="flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xl font-bold mb-4">
+                  {item.step}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                <p className="text-muted-foreground">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Demo Section */}
+      <section id="demo" className="py-20 bg-secondary/30">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-8">See it in Action</h2>
+          <div className="max-w-3xl mx-auto aspect-video bg-muted rounded-xl flex items-center justify-center border shadow-sm">
+            <p className="text-muted-foreground">Demo Video Placeholder</p>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
       <section id="pricing" className="py-20">
         <div className="container mx-auto px-4">

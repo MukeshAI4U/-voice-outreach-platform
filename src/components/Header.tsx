@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { Mic, Menu, X } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 interface HeaderProps {
@@ -13,10 +13,21 @@ export const Header = ({ variant = "default" }: HeaderProps) => {
 
   if (variant === "dashboard") return null; // Dashboard has its own layout
 
+  const handleScroll = (id: string) => (e: React.MouseEvent) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
     <header className="border-b sticky top-0 bg-background/95 backdrop-blur z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
           <div className="h-8 w-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground">
             <Mic className="h-5 w-5" />
           </div>
@@ -25,10 +36,10 @@ export const Header = ({ variant = "default" }: HeaderProps) => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          <Link to="/" className="text-sm font-medium hover:text-primary">Home</Link>
-          <a href="/#features" className="text-sm font-medium hover:text-primary">Features</a>
-          <a href="/#how-it-works" className="text-sm font-medium hover:text-primary">How it Works</a>
-          <a href="/#pricing" className="text-sm font-medium hover:text-primary">Pricing</a>
+          <Link to="/" className="text-sm font-medium hover:text-primary" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>Home</Link>
+          <a href="/#features" className="text-sm font-medium hover:text-primary" onClick={handleScroll("features")}>Features</a>
+          <a href="/#how-it-works" className="text-sm font-medium hover:text-primary" onClick={handleScroll("how-it-works")}>How it Works</a>
+          <a href="/#pricing" className="text-sm font-medium hover:text-primary" onClick={handleScroll("pricing")}>Pricing</a>
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
@@ -57,10 +68,10 @@ export const Header = ({ variant = "default" }: HeaderProps) => {
       {isMenuOpen && (
         <div className="md:hidden border-t p-4 bg-background">
           <nav className="flex flex-col space-y-4">
-            <Link to="/" className="text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>Home</Link>
-            <a href="/#features" className="text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>Features</a>
-            <a href="/#how-it-works" className="text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>How it Works</a>
-            <a href="/#pricing" className="text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>Pricing</a>
+            <Link to="/" className="text-sm font-medium hover:text-primary" onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>Home</Link>
+            <a href="/#features" className="text-sm font-medium hover:text-primary" onClick={handleScroll("features")}>Features</a>
+            <a href="/#how-it-works" className="text-sm font-medium hover:text-primary" onClick={handleScroll("how-it-works")}>How it Works</a>
+            <a href="/#pricing" className="text-sm font-medium hover:text-primary" onClick={handleScroll("pricing")}>Pricing</a>
             
              {variant === "auth" ? (
                 <Link to="/" className="text-sm font-medium hover:text-primary" onClick={() => setIsMenuOpen(false)}>Back to Home</Link>
